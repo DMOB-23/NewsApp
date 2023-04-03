@@ -1,8 +1,28 @@
-import { View } from "react-native"
+import { FlatList, ListRenderItemInfo } from "react-native"
+import { Article } from "../../data/model"
+import { NewsItem } from "./components/item"
+import { LoaderIndicator } from "./components/loader"
+import useListNews from "./hook/useListNews"
 
 const ListNews = () => {
+
+    const { isLoading, articles } = useListNews()
+
+    const renderArticle = ({ item }: ListRenderItemInfo<Article>) =>
+        <NewsItem article={item} />
+
+    const newsKeyExtractor = (_: Article, index: number) => index.toString()
+
+    if (isLoading) {
+        return <LoaderIndicator />
+    }
+
     return (
-        <View></View>
+        <FlatList 
+            data={articles}
+            renderItem={renderArticle}
+            keyExtractor={newsKeyExtractor}
+        />
     )
 }
 
