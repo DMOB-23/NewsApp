@@ -14,7 +14,6 @@ const useListNews = (): UseListNewsResult => {
 
     useEffect(() => {
         const loadHeadlines = async () => {
-            console.log('will load headlines')
             setIsLoading(true)
             const result = await getHeadlines()
             setIsLoading(false)
