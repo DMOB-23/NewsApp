@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
         fontStyle: 'italic',
         margin: 10,
         textAlign: 'center',
-    }
+    },
 })
 
 export default styles

@@ -1,17 +1,32 @@
-import { Button, Image, ScrollView, Text, View } from "react-native"
+import { Button, Image, Linking, ScrollView, Text, View } from "react-native"
 import styles from "./Styles"
+import { useRoute } from "@react-navigation/native"
+import { DetailsNewsRouteProp } from "./interface"
+import { dateUtils } from "../../utils/date"
 
 const DetailsNews = () => {
+    const { params: { article } } = useRoute<DetailsNewsRouteProp>()
+
+    const openArticle = () => {
+        Linking.openURL(article.url)
+    }
+
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <View style={styles.container}>
-                <Image source={{  }} style={styles.image} />
-                
-                <Text style={styles.title}>title</Text>
-                <Text style={styles.source}>source</Text>
-                <Text style={styles.content}>content</Text>
-                
-                <Button onPress={() => null} title="Continue lendo"/>
+                {
+                    article.urlToImage ?
+                        <Image source={{ uri: article.urlToImage }} style={styles.image} />
+                        : null
+                }
+
+                <Text style={styles.title}>{article.title}</Text>
+                <Text style={styles.source}>
+                    {`${article.source.name} - ${dateUtils.formatDate(article.publishedAt)}`}
+                </Text>
+                <Text style={styles.content}>{article.content}</Text>
+
+                <Button onPress={openArticle} title="Continue lendo" />
             </View>
         </ScrollView>
     )

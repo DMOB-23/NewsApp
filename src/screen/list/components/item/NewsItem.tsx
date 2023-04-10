@@ -1,13 +1,26 @@
-import { Image, Text, View } from "react-native"
+import { Image, Pressable, Text, View } from "react-native"
 import { NewsItemProps } from "./interface"
 import styles from "./Styles"
 import { dateUtils } from "../../../../utils/date"
+import { useNavigation } from "@react-navigation/native"
+import { AppNavigatorProps } from "../../../../navigation/app"
+import { memo } from "react"
 
 const NewsItem = ({ article }: NewsItemProps) => {
+    const navigator = useNavigation<AppNavigatorProps>()
+
+    const openDetails = () => {
+        navigator.navigate('Details', { article })
+    }
+
     return (
-        <View style={styles.container}>
-            <Image source={{ uri: article.urlToImage }} 
-                style={styles.cover}/>
+        <Pressable style={styles.container} onPress={openDetails}>
+
+            {article.urlToImage ?
+                <Image source={{ uri: article.urlToImage }}
+                    style={styles.cover} />
+                : null
+            }
 
             <Text style={styles.title}>{article.title}</Text>
             <View style={styles.detailsContainer}>
@@ -16,8 +29,8 @@ const NewsItem = ({ article }: NewsItemProps) => {
                     {dateUtils.formatDate(article.publishedAt)}
                 </Text>
             </View>
-        </View>
+        </Pressable>
     )
 }
 
-export default NewsItem
+export default memo(NewsItem)
